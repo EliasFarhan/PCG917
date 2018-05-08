@@ -101,6 +101,54 @@ public class SRChunkManager : MonoBehaviour
 				}
 			}
 			break;
+			case MazeGeneratorType.BFS:
+				{
+					visitedChunk[currentPos.x, currentPos.y] = true;
+					while (currentPos != targetPos)
+					{
+						//Check neighbors
+						for (int dx = -1; dx <= 1; dx++)
+						{
+							for (int dy = -1; dy <= 1; dy++)
+							{
+								if (dx == dy || dx == -dy)
+								{
+									continue;
+								}
+								Vector2Int neighborPos = currentPos + new Vector2Int(dx, dy);
+								if (neighborPos.x < 0 ||
+									neighborPos.y < 0 ||
+									neighborPos.x == _sizeX ||
+									neighborPos.y == _sizeY)
+								{
+									continue;
+								}
+
+								if (visitedChunk[neighborPos.x, neighborPos.y])
+								{
+									continue;
+								}
+
+								nextPositions.Add(neighborPos);
+
+							}
+						}
+						Debug.Log("Current Position: " + currentPos);
+						if (nextPositions.Count != 0)
+						{
+							//Random heuristic with neighbors of current pos
+							var newCurrentPos = nextPositions.Random();
+							previousPos[newCurrentPos.x, newCurrentPos.y] = currentPos;
+							currentPos = newCurrentPos;
+							visitedChunk[currentPos.x, currentPos.y] = true;
+						}
+						else
+						{
+							currentPos = previousPos[currentPos.x, currentPos.y];
+						}
+					}
+				}
+				break;
 		}
 
 		currentPos = targetPos;

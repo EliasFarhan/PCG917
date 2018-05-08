@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CameraTrackingType
+{
+	Chunk20x18,
+	Horizontal,
+	None
+}
+
 public class SRPlayerCharacter : MonoBehaviour
 {
 	private Animator _anim;
@@ -11,12 +18,13 @@ public class SRPlayerCharacter : MonoBehaviour
 
 	private const float JumpInitSpeed = 11.0f;
 	private const float WalkSpeed = 5.0f;
-	private const float CameraSpeed = 10.0f;
+	private const float CameraSpeed = 7.0f;
 
 	private bool _jumpButton = false;
 	private bool _grounded = false;
 	private bool _facingRight = true;
-
+	[SerializeField]
+	CameraTrackingType _cameraTrackingType = CameraTrackingType.Chunk20x18;
 	private Camera _mainCamera;
 	// Use this for initialization
 	void Start ()
@@ -43,13 +51,29 @@ public class SRPlayerCharacter : MonoBehaviour
 
 	void LateUpdate()
 	{
-		Vector3 newCameraPosition = new Vector3(
-			(int)transform.position.x/(SRChunk.SizeX*SRChunk.TileSize), 
-			(int)transform.position.y / (SRChunk.SizeY * SRChunk.TileSize));
-		Vector3 deltaPos = newCameraPosition - _mainCamera.transform.position;
-		if (deltaPos.magnitude > 1.0f)
+		switch (_cameraTrackingType)
 		{
-			_mainCamera.transform.position += deltaPos.normalized * CameraSpeed * Time.deltaTime;
+			case CameraTrackingType.Chunk20x18:
+				{
+					Vector3 newCameraPosition = new Vector3(
+						(int)transform.position.x / (SRChunk.SizeX * SRChunk.TileSize),
+						(int)transform.position.y / (SRChunk.SizeY * SRChunk.TileSize), -10);
+					Vector3 deltaPos = newCameraPosition - _mainCamera.transform.position;
+					if (deltaPos.magnitude > 1.0f)
+					{
+						_mainCamera.transform.position += deltaPos.normalized * CameraSpeed * Time.deltaTime;
+					}
+				}
+				break;
+			case CameraTrackingType.Horizontal:
+				{
+					Vector3 newCameraPosition = transform.position.withY(0).withZ(-10);
+					Vector3 deltaPos = newCameraPosition - _mainCamera.transform.position;
+					
+					_mainCamera.transform.position += deltaPos*CameraSpeed*Time.deltaTime;
+					
+				}
+				break;
 		}
 	}
 
@@ -74,6 +98,8 @@ public class SRPlayerCharacter : MonoBehaviour
 		{
 			Flip();
 		}
+
+		
 	}
 	void Flip()
 	{
