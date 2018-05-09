@@ -59,7 +59,7 @@ public class SRChunk : MonoBehaviour
 
 	public void BinarySpacePartitioning()
 	{
-		/*int newLine = Random.Range(3, 14);
+		int newLine = Random.Range(3, 14);
 		int newColumn = Random.Range(3, 16);
 
 		for (int i = 0; i < SizeX; i++)
@@ -71,6 +71,6 @@ public class SRChunk : MonoBehaviour
 					_chunkTilemap.SetTile(new Vector3Int(i - SizeX / 2, j - SizeY / 2, 0), _wallTile);
 				}
 			}
-		}*/
+		}
 	}
 }

@@ -274,6 +274,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114605229020745270, guid: d00632dc6d0defc4897ecfbc45b8c3b0,
+        type: 2}
+      propertyPath: _mazeGeneratorType
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d00632dc6d0defc4897ecfbc45b8c3b0, type: 2}
   m_IsPrefabParent: 0
@@ -404,6 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _foot: {fileID: 1251277253}
+  _cameraTrackingType: 0
 --- !u!58 &1227319382
 CircleCollider2D:
   m_ObjectHideFlags: 0
